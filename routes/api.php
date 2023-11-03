@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CharityController;
 use App\Http\Controllers\API\ContactController;
@@ -12,6 +12,8 @@ use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\TransactionController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -50,3 +52,26 @@ Route::get('charities/{charity}', [CharityController::class, 'show']);
 Route::post('contact', [ContactController::class, 'store']);
 
 
+
+Route::prefix('auth')
+    ->as('auth.')
+    ->group(function () {
+
+        Route::post('login', [AuthController::class, 'login'])->name('login');
+        Route::post('register', [AuthController::class, 'register'])->name('register');
+        Route::post('login_with_token', [AuthController::class, 'loginWithToken'])
+            ->middleware('auth:sanctum')
+            ->name('login_with_token');
+        Route::get('logout', [AuthController::class, 'logout'])
+            ->middleware('auth:sanctum')
+            ->name('logout');
+
+    });
+
+Route::middleware('auth:sanctum')->group(function (){
+
+    Route::apiResource('chat', ChatController::class)->only(['index','store','show']);
+    Route::apiResource('chat_message', ChatMessageController::class)->only(['index','store']);
+    Route::apiResource('user', UserController::class)->only(['index']);
+
+});
