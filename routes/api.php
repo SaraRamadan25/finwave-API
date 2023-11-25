@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CharityController;
 use App\Http\Controllers\API\ContactController;
