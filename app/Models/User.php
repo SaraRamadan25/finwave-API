@@ -27,6 +27,7 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'created_by');
     }
 
+
     public function routeNotificationForOneSignal() : array{
         return ['tags'=>['key'=>'userId','relation'=>'=', 'value'=>(string)($this->id)]];
     }
