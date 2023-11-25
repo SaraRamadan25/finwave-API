@@ -16,6 +16,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 //Protected Routes
@@ -52,7 +53,7 @@ Route::get('charities/{charity}', [CharityController::class, 'show']);
 Route::post('contact', [ContactController::class, 'store']);
 
 
-
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 Route::prefix('auth')
     ->as('auth.')
     ->group(function () {
