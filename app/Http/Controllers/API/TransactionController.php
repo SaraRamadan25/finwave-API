@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -106,6 +107,7 @@ class TransactionController extends Controller
                 break;
         }
     }
+
     public function store(StoreTransactionRequest $request): JsonResponse
     {
         $user = Auth::user();
@@ -123,15 +125,18 @@ class TransactionController extends Controller
         return response()->json($transaction);
     }
 
-        public function update(UpdateTransactionRequest $request, Transaction $transaction): TransactionResource
+    public function update(UpdateTransactionRequest $request, Transaction $transaction): TransactionResource
     {
         $transaction->update($request->validated());
         return new TransactionResource($transaction);
     }
+
     public function destroy(Transaction $transaction): Response|ResponseFactory
     {
         $transaction->delete();
         return response(null, 204);
     }
+
+
 
 }
