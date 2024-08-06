@@ -9,12 +9,14 @@ class GoalResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $percentage = $this->target_amount > 0 ? ($this->saved_amount / $this->target_amount) * 100 : 0;
+
         return [
             'id'=>$this->id,
-            'title'=>$this->title,
-            'description'=>$this->description,
-            'amount_of_money'=>$this->amount_of_money,
-            'money_limit'=>$this->money_limit,
+            'name'=>$this->name,
+            'target_amount'=>$this->target_amount,
+            'saved_amount'=>$this->saved_amount,
+            'percentage' => $percentage,
             'user'=>$this->user->name,
         ];
     }

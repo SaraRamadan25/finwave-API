@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Notifications\CustomPasswordResetNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -68,7 +69,8 @@ class AuthController extends Controller
 
     public function getUserInfo(): UserResource
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        \Log::info('Authenticated user:', ['user' => $user]);
 
         if (!$user) {
             abort(404, 'User not found');

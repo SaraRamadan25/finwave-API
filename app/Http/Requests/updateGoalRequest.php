@@ -18,11 +18,7 @@ class updateGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>'string',
-            'description'=>'string',
-            'amount_of_money'=>'numeric',
-            'money_limit'=>'numeric',
-            'user_id'=>'exists:users,id',
+            'saved_amount' => 'required|numeric|min:0',
         ];
     }
 }

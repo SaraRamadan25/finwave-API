@@ -18,11 +18,8 @@ class StoreGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>'required|string',
-            'description'=>'required|string',
-            'amount_of_money'=>'required|numeric',
-            'money_limit'=>'required|numeric',
-            'user_id'=>'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'target_amount' => 'required|numeric|min:0',
         ];
     }
 }

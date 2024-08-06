@@ -9,8 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Goal extends Model
 {
     use HasFactory;
+
     protected $guarded=[];
 
+    protected $attributes = [
+        'saved_amount' => 0,
+    ];
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

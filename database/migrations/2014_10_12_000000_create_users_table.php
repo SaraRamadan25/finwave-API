@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->foreignId('community_id')->nullable();
             $table->string('phone')->nullable();
+            $table->decimal('cash_balance', 10, 2)->default(0)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

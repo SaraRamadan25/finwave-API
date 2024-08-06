@@ -11,10 +11,9 @@ return new class extends Migration
     {
         Schema::create('goals', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->decimal('amount_of_money');
-            $table->decimal('money_limit');
+            $table->string('name');
+            $table->decimal('target_amount', 10, 2);
+            $table->decimal('saved_amount', 10, 2)->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

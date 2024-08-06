@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,11 +21,7 @@ class User extends Authenticatable implements CanResetPassword
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,6 +41,8 @@ class User extends Authenticatable implements CanResetPassword
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'cash_balance' => 'decimal:2',
+
     ];
 
     public function community(): BelongsTo
@@ -74,5 +73,15 @@ class User extends Authenticatable implements CanResetPassword
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
+    }
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+    protected static function booted(): void
+    {
+        static::addGlobalScope('authenticated', function (Builder $builder) {
+            $builder->whereNotNull('id');
+        });
     }
 }
