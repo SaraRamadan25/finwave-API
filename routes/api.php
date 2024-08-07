@@ -32,7 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('transactions/expenses/{category}', [TransactionController::class, 'getExpenseDetails']);
     Route::get('statistics', [TransactionController::class, 'index']);
     Route::get('statistics-details', [TransactionController::class, 'details']);
-
+    Route::get('category-details', [TransactionController::class, 'categoryDetails']);
+    Route::get('investments', [InvestmentController::class, 'index']);
+    Route::post('investments', [InvestmentController::class, 'store']);
 });
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

@@ -22,32 +22,36 @@ class InvestmentController extends Controller
         $investments = Investment::with('user')->get();
         return InvestmentResource::collection($investments);
     }
-    public function store(StoreInvestmentRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $data = $request->validated();
-        if ($request->hasFile('image')) {
-            $imagePaths = [];
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'videos' => 'nullable|array',
+            'videos.*' => 'nullable|file|mimes:mp4,mov,avi,wmv',
+            'description' => 'required|string',
+            'user_id' => 'required|exists:users,id',
+        ]);
 
-            foreach ($request->file('image') as $image) {
-                $path = $this->uploadImage($image);
-                $imagePaths[] = $path;
-            }
-
-            $data['image'] = json_encode($imagePaths);
+        $imagePaths = [];
+        foreach ($data['image'] as $image) {
+            $path = $this->uploadImage($image);
+            $imagePaths[] = $path;
         }
-        if ($request->hasFile('videos')) {
-            $videoPaths = [];
+        $data['image'] = json_encode($imagePaths);
 
-            foreach ($request->file('videos') as $video) {
+        if ($request->has('videos')) {
+            $videoPaths = [];
+            foreach ($data['videos'] as $video) {
                 $path = $this->uploadVideo($video);
                 $videoPaths[] = $path;
             }
-
             $data['videos'] = json_encode($videoPaths);
         }
 
         $investment = Investment::create($data);
-        return response()->json($investment, 201);
+
+        return response()->json(['message' => 'Your Investment Created Successfully!'], 201);
     }
     public function show(Investment $investment): InvestmentResource
     {
